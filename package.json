@@ -1,0 +1,29 @@
+{
+  "name": "yapp",
+  "version": "0.1.0",
+  "description": "Yet another Planning Poker app",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/selfdeceited/yapp.git"
+  },
+  "keywords": [
+    "planningpoker",
+    "socket"
+  ],
+  "author": "selfdeceited",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/selfdeceited/yapp/issues"
+  },
+  "homepage": "https://github.com/selfdeceited/yapp#readme",
+  "devDependencies": {
+    "express": "^4.16.2"
+  },
+  "dependencies": {
+    "socket.io": "^2.0.4"
+  }
+}
