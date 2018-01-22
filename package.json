@@ -21,10 +21,8 @@
     "url": "https://github.com/selfdeceited/yapp/issues"
   },
   "homepage": "https://github.com/selfdeceited/yapp#readme",
-  "devDependencies": {
-    "express": "^4.16.2"
-  },
   "dependencies": {
+    "express": "^4.16.2",
     "socket.io": "^2.0.4"
   }
 }
