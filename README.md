@@ -1,4 +1,6 @@
 # yapp
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/selfdeceited/yapp.svg)](https://greenkeeper.io/)
 Yep Another Planning Poker (draft)
 
 ## Scenarios / Site Map
