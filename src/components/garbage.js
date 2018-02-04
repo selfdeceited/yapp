@@ -1,4 +1,8 @@
-$(function() {
+import io from 'socket.io-client';
+import $ from "jquery"
+
+module.exports = {
+garbage : () => $(function() {
     var FADE_TIME = 150; // ms
     var TYPING_TIMER_LENGTH = 400; // ms
     var COLORS = [
@@ -279,4 +283,5 @@ $(function() {
       log('attempt to reconnect has failed');
     });
   
-  });
+  })
+}
