@@ -1,5 +1,9 @@
 # yapp
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/selfdeceited/yapp.svg)](https://greenkeeper.io/)
+
 Yep Another Planning Poker (WIP)
+=======
 
 ### Roadmap
  - [x] making app still work after installing React & bundler
