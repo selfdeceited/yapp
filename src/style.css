@@ -86,12 +86,6 @@
     font-weight: 100;
   }
   
-  /* Chat page */
-  
-  .chat.page {
-    display: none;
-  }
-  
   /* Font */
   
   .messages {
