@@ -7,8 +7,8 @@ Yep Another Planning Poker (WIP)
 
 ### Roadmap
  - [x] making app still work after installing React & bundler
- - [ ] Migrate current app to fully support React-only (no legacy jQuery code)
- - [ ] Migrate app to use Redux
+ - [x] Migrate current app to fully support React-only (no legacy jQuery code)
+ - [x] Migrate app to use Redux
  - [ ] Migrate app to use Ramda
 ##### Slowly migrate to using Planning Poker functionality
  - [ ] One room for everyone; all are moderators. Once all joined, one clicks 'start' and people can type their value. Last value wins. After one clicks 'reveal', messages are shown.
