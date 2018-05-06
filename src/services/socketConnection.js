@@ -4,7 +4,6 @@ let singleton = Symbol();
 let singletonEnforcer = Symbol();
 
 class SocketConnectionSingleton {
-
   constructor(enforcer) {
     if (enforcer !== singletonEnforcer)
        throw "Instantiation failed: use SocketConnectionSingleton.getInstance() instead of new.";

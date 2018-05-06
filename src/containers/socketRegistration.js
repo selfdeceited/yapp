@@ -1,22 +1,25 @@
 import { connect } from 'react-redux'
-import { SocketRegistration } from "../services/socketRegistration"
+import SocketRegistrationSingleton from "../services/socketRegistrationSingleton"
 import { addChatMessage, connected } from '../actions/index'
 import SocketRegistrationStub from '../presentational/socketRegistrationStub'
 import * as React from "react"
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
     return {
       getUsername: () => state.username
     }
-  }
+}
   
-  const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
     return {
-      start: (getUsername) => {
-          var add = message => dispatch(addChatMessage(message));
-          var connect = () => dispatch(connected());
-          //new SocketRegistration(getUsername, dispatch(addChatMessage), dispatch(connected))
-          new SocketRegistration(getUsername, add, connect)
+        start: getUsername => {
+            var add = message => dispatch(addChatMessage(message));
+            var connect = () => dispatch(connected());
+             
+            SocketRegistrationSingleton.instance.addChatMessage = add;
+            SocketRegistrationSingleton.instance.getUsername = getUsername;
+            SocketRegistrationSingleton.instance.connected = connect;
+            SocketRegistrationSingleton.instance.register()
         }
     }
   }

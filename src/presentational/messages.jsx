@@ -15,8 +15,8 @@ export default class Messages extends React.Component {
                 <ul className="messages">
                   { 
                       this.props.messages.map(m => m.isLog
-                      ? <LogMessage messages={this.props.messages} message={m}/>
-                      : <UserMessage messages={this.props.messages} message={m}/>)
+                      ? <LogMessage key={this.props.messages.indexOf(m)} messages={this.props.messages} message={m}/>
+                      : <UserMessage key={this.props.messages.indexOf(m)} messages={this.props.messages} message={m}/>)
                   }
                   <li ref={el => { this.messagesEnd = el; }}></li>
                 </ul>
