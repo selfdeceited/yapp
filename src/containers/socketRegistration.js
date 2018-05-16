@@ -2,7 +2,11 @@ import { connect } from 'react-redux'
 import SocketRegistrationSingleton from "../services/socketRegistrationSingleton"
 import { addChatMessage, connected } from '../actions/index'
 import SocketRegistrationStub from '../presentational/socketRegistrationStub'
-import * as React from "react"
+import * as React from 'react'
+import * as R from 'ramda'
+
+
+const registration = SocketRegistrationSingleton.instance;
 
 const mapStateToProps = state => {
     return {
@@ -13,13 +17,10 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         start: getUsername => {
-            var add = message => dispatch(addChatMessage(message));
-            var connect = () => dispatch(connected());
-             
-            SocketRegistrationSingleton.instance.addChatMessage = add;
-            SocketRegistrationSingleton.instance.getUsername = getUsername;
-            SocketRegistrationSingleton.instance.connected = connect;
-            SocketRegistrationSingleton.instance.register()
+            registration.addChatMessage = message => dispatch(addChatMessage(message))
+            registration.connected = () => dispatch(connected())
+            registration.getUsername = getUsername
+            registration.register()
         }
     }
   }

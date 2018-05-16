@@ -9,7 +9,8 @@ Yep Another Planning Poker (WIP)
  - [x] making app still work after installing React & bundler
  - [x] Migrate current app to fully support React-only (no legacy jQuery code)
  - [x] Migrate app to use Redux
- - [ ] Migrate app to use Ramda
+ - [x] Migrate app to use Ramda
+ - [ ] Cover app with unit tests
 ##### Slowly migrate to using Planning Poker functionality
  - [ ] One room for everyone; all are moderators. Once all joined, one clicks 'start' and people can type their value. Last value wins. After one clicks 'reveal', messages are shown.
  - [ ] Add moderator role. He invites people to the chat. Moderator selects stories to be reviewed and set estimation result.

@@ -2,13 +2,9 @@ import { connect } from 'react-redux'
 import { addChatMessage } from '../actions/index'
 import Messages from '../presentational/messages'
 import SocketConnection from '../services/socketConnection'
+import * as R from 'ramda'
 
-const mapStateToProps = (state) => {
-  return {
-    messages: state.messages,
-    username: state.username
-  }
-}
+const mapStateToProps = state => R.pick(['messages', 'username'], state)
 
 const sendMessage = (event, username, dispatch) => {
     const message = event.target.value

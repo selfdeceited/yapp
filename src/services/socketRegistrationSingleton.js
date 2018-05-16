@@ -1,4 +1,5 @@
 import SocketConnection from './socketConnection'
+import * as R from 'ramda'
 
 let singleton = Symbol();
 let singletonEnforcer = Symbol();
@@ -28,75 +29,49 @@ class SocketRegistrationSingleton {
 
 var self = SocketRegistrationSingleton.instance
 self.socket = SocketConnection.instance.socket
+
 self.register = () => {
     if (!self.connected || !self.addChatMessage || !self.getUsername)
-        return;
+        return
 
     if (SocketRegistrationSingleton.registered)
-        return;
+        return
 
-    self.registerLogin()
-    self.registerNewMessage()
-    self.registerReconnect()
-    self.registerReconnectError()
-    self.registerUserJoined()
-    self.registerUserLeft()
-}
-
-self.registerLogin = (connected) => {
-    self.socket.on('login', function (data) {
-        self.connected()
-        var message = "Welcome to YAPP!"
-        self.log(message, {
-          prepend: true
-        })
-        self.addParticipantsMessage(data)
-      })
-}
-
-self.registerNewMessage = () => {
-    self.socket.on('new message', function (data) {
-        self.addChatMessage({
-          username: data.username,
-          body: data.message,
-          isLog: false
-        })
-      })
-}
-
-self.registerUserJoined = () => {
-    self.socket.on('user joined', function (data) {
-        self.log(data.username + ' joined')
-        self.addParticipantsMessage(data)
-      });
-}
-
-self.registerUserLeft = () => {
-    self.socket.on('user left', function (data) {
-        self.log(data.username + ' left')
-        self.addParticipantsMessage(data)
-      })
-}
-
-self.registerDisconnect = () => {
-    self.socket.on('disconnect', function () {
-        self.log('you have been disconnected')
-      })
-}
-
-self.registerReconnect = () => {
-    self.socket.on('reconnect', function () {
-        self.log('you have been reconnected')
-        if (self.getUsername()) {
-          self.socket.emit('add user', self.getUsername());
+        const registrationActions = {
+            'login': data => {
+                self.connected()
+                var message = "Welcome to YAPP!"
+                self.log(message, {
+                  prepend: true
+                })
+                self.addParticipantsMessage(data)
+            },
+            'new message': data => {
+                self.addChatMessage({
+                    username: data.username,
+                    body: data.message,
+                    isLog: false
+                  })
+            },
+            'user joined': data => {
+                self.log(data.username + ' joined')
+                self.addParticipantsMessage(data)
+            },
+            'user left': data => {
+                self.log(data.username + ' left')
+                self.addParticipantsMessage(data)
+            },
+            'disconnect': () => self.log('you have been disconnected'),
+            'reconnect': () => {
+                self.log('you have been reconnected')
+                if (self.getUsername()) {
+                    self.socket.emit('add user', self.getUsername());
+                }
+            },
+            'reconnect_error': () => self.log('attempt to reconnect has failed')
         }
-      })
-}
-
-self.registerReconnectError = () => {
-    self.socket.on('reconnect_error', function () {
-        self.log('attempt to reconnect has failed')
-      })
+        
+        R.mapObjIndexed((fn, name, obj) => self.socket.on(name, fn), registrationActions) // todo: refactor even better
 }
 
 self.addParticipantsMessage = (data) => {
@@ -116,5 +91,6 @@ self.log = (message, options) => {
       isLog: true
     })
 }
+
 
 export default SocketRegistrationSingleton;

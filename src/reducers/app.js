@@ -1,3 +1,5 @@
+import * as R from 'ramda'
+
 export const initialState = {
   username: "",
   logged_in: false,
@@ -9,30 +11,22 @@ export const initialState = {
 
 const app = (state, action) => {
   if (state === undefined)
-    state = initialState;
+    state = initialState
 
-  const concatObj = (prev, next) => Object.assign({}, prev, next);
+  const add = stateChanges => (state, action) => R.merge(state, stateChanges)
+  const addWithCheck = (predicate, stateChanges) => predicate ? add(stateChanges) : (state, action) => state
 
-  const addNew = (name, newStateChanges) => {
-    var returnObj = {};
-    returnObj[name] = (state, action) => concatObj(state, newStateChanges)
-    return returnObj;
+  const basicReducers = {
+    'SET_USERNAME': add({ username: action.username, logged_in: true }),
+    'CONNECTED': add({ connected: true }),
+    'ADD_MESSAGE': addWithCheck(action.message && state.connected, 
+      { messages: state.messages.concat([action.message])})
   }
 
-  const basicReducers = [
-    addNew('SET_USERNAME', { username: action.username, logged_in: true }),
-    addNew('CONNECTED', { connected: true }),
-    {
-      'ADD_MESSAGE': (state, action) => action.message && state.connected
-        ? concatObj(state, { messages: state.messages.concat([action.message])})
-        : state
-    }
-  ].reduce(concatObj);
-
-  const reducer = basicReducers[action.type];
+  const reducer = basicReducers[action.type]
   if (!!reducer) {
     return reducer(state, action)
-  } else return state;
+  } else return state
 }
 
 export default app
