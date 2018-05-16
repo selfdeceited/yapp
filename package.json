@@ -7,7 +7,8 @@
     "start": "node server.js",
     "postinstall": "parcel build ./src/index.html",
     "build": "parcel build ./src/index.html",
-    "dev": "parcel watch ./src/index.html"
+    "dev": "parcel watch ./src/index.html",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -34,5 +35,10 @@
     "react-redux": "^5.0.7",
     "redux": "^3.7.2",
     "socket.io": "^2.0.4"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.0.0-beta.47",
+    "babel-jest": "^22.4.3",
+    "jest": "^22.4.3"
   }
 }
