@@ -31,7 +31,7 @@
     "parcel-bundler": "^1.5.1",
     "ramda": "^0.25.0",
     "react": "^16.6.0",
-    "react-dom": "^16.2.0",
+    "react-dom": "^16.6.0",
     "react-redux": "^5.0.7",
     "redux": "^3.7.2",
     "socket.io": "^2.0.4"
