@@ -49,3 +49,5 @@ describe('reducers', () => {
         expect(reducedState.messages[0]).toEqual(undefined)
     })
   })
+
+// todo: enhance tests to pass & add new ones!

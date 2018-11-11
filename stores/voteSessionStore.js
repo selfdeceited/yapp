@@ -17,7 +17,7 @@ class VoteSessionStore extends ObjectStore
   }
 
   containsVoteFor(username) {
-    return this.data.filter(x=>x.username === username).length > 0
+    return this.data.filter(x => x.username === username).length > 0
   }
 
   store(result) {

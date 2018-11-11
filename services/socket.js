@@ -6,8 +6,8 @@ const counter = new ObjectStore(0)
 const users = new UserStore()
 const voteSession = new VoteSessionStore()
 
-const estimationSent = function(socket){
-  socket.on('estimation sent', function(data){
+const estimationSent = function(socket) {
+  socket.on('estimation sent', function(data) {
     console.log('estimation sent by '+ socket.username)
     socket.broadcast.emit('user estimated', {
       username: socket.username,
@@ -18,8 +18,8 @@ const estimationSent = function(socket){
 
 const newModerator = function(socket) {
   const actionName = 'new moderator'
-  socket.on(actionName, function(data) {
-    if (!socket.username){
+  socket.on(actionName, function() {
+    if (!socket.username) {
       console.error("username not set, exiting")
       return;
     }
@@ -27,29 +27,21 @@ const newModerator = function(socket) {
     if (users.moderatorExists()) {
       const message = `moderator already exists`;
       console.error(message)
-      //socket.broadcast.emit('error', {message})
       return;
     }
 
-    console.log("setting moderator for "+socket.username)
-    socket.emit(actionName, {
-      username: socket.username
-    })
-    socket.broadcast.emit(actionName, {
-      username: socket.username
-    })
+    console.log("setting moderator for " + socket.username)
+    socket.emit(actionName, { username: socket.username })
+    socket.broadcast.emit(actionName, { username: socket.username })
     users.getBy(socket.username).isModerator = true
   })
 }
 
 const finishEstimation = function(socket){
   const actionName = 'finish estimation'
-  socket.on(actionName, function(data) {
-    console.log(actionName + " for "+ voteSession.issueDescription)
-    const emitResult = {
-      voteResults: voteSession.get()
-    }
-  
+  socket.on(actionName, function() {
+    console.log(actionName + " for " + voteSession.issueDescription)
+    const emitResult = { voteResults: voteSession.get() }
     socket.emit(actionName, emitResult)
     socket.broadcast.emit(actionName, emitResult)
   
@@ -57,7 +49,7 @@ const finishEstimation = function(socket){
   })
 }
 
-const newMessageGeneric = function(actionName, noEmitAction, customAction){
+const newMessageGeneric = function(actionName, noEmitAction, customAction) {
   return function(socket) {
     socket.on(actionName, function(data) {
       const emitResult = {
@@ -69,97 +61,91 @@ const newMessageGeneric = function(actionName, noEmitAction, customAction){
 
       if (!noEmitAction) {
         socket.broadcast.emit(actionName, emitResult)
-      } else noEmitAction(emitResult);
+      } else noEmitAction(emitResult)
     })
   }
 }
 
 const newMessage = newMessageGeneric('new message')
 
-const newIssue = newMessageGeneric('new issue', undefined, function(description){
-    voteSession.start(description);
-    console.info("new estimation session started: " + description)
+const newIssue = newMessageGeneric('new issue', undefined, function(description) {
+  voteSession.start(description);
+  console.info("new estimation session started: " + description)
 })
 
 const newEstimation = newMessageGeneric('new estimation', function(emitResult) {
-        if (voteSession.get() === undefined){
-          console.error(`voting session is closed, please ask moderator to set the description`)
-          return;
-        }
+  if (voteSession.get() === undefined) {
+    console.error(`voting session is closed, please ask moderator to set the description`)
+    return
+  }
 
-        if (!voteSession.containsVoteFor(emitResult.username))
-          voteSession.store(emitResult)
-        else   // todo: switch to configurable condition if to allow replays or not!
-            voteSession.editResultFor(emitResult.username, emitResult)
-
-        return;
+  if (!voteSession.containsVoteFor(emitResult.username))
+    voteSession.store(emitResult)
+  else  // todo: switch to configurable condition if to allow replays or not!
+    voteSession.editResultFor(emitResult.username, emitResult)
 }, undefined)
 
 const addUser = function(socket, userAddedStatus) {
-    socket.on('add user', function(username){
-      console.log('add user ' + username)
-      if (users.exists(username)){
-          const message = `username ${username} already exists`;
-          console.error(message)
-          //socket.broadcast.emit('error', {message})
-          return;
-      }
-        let numUsers = counter.get()
-        let addedUser = userAddedStatus.get()
-        if (addedUser) return
+  socket.on('add user', function(username) {
+    console.log('add user ' + username)
+    if (users.exists(username)){
+      const message = `username ${username} already exists`;
+      console.error(message)
+      return;
+    }
+    let numUsers = counter.get()
+    let addedUser = userAddedStatus.get()
+    if (addedUser) return
 
-        socket.username = username
-        ++numUsers
-        addedUser = true
+    socket.username = username
+    ++numUsers
+    addedUser = true
 
-        counter.set(numUsers)
-        userAddedStatus.set(addedUser)
-        users.add({username, isModerator: false})
+    counter.set(numUsers)
+    userAddedStatus.set(addedUser)
+    users.add({username, isModerator: false})
 
-        socket.emit('login', { numUsers: numUsers, moderatorExists: users.moderatorExists() })
-        socket.broadcast.emit('user joined', {
-          username: socket.username,
-          numUsers: numUsers
-        })
-      })
+    socket.emit('login', { numUsers, moderatorExists: users.moderatorExists() })
+    socket.broadcast.emit('user joined', { username: socket.username, numUsers })
+  })
 }
 
-const disconnect = function(socket, userAddedStatus){
+const disconnect = function(socket, userAddedStatus) {
   socket.on('disconnect', function() {
-    console.log(socket.username+' disconnected')
-      let numUsers = counter.get()
-      let addedUser = userAddedStatus.get()
-      if (addedUser) {
-        --numUsers
-        counter.set(numUsers)
-        if (numUsers === 0)
-          voteSession.invalidate()
+    console.log(socket.username + ' disconnected')
+    let numUsers = counter.get()
+    let addedUser = userAddedStatus.get()
+    if (addedUser) {
+      --numUsers
+      counter.set(numUsers)
+      if (numUsers === 0)
+        voteSession.invalidate()
 
-        users.remove(socket.username)
+      users.remove(socket.username)
 
-        socket.broadcast.emit('user left', {
-          username: socket.username,
-          numUsers: numUsers
-        })
-      }
-    })
+      socket.broadcast.emit('user left', {
+        username: socket.username,
+        numUsers: numUsers
+      })
+    }
+  })
 }
 
 const init = function(io){
-    io.on('connection', function(socket) {
-        console.log("new connection")
-        const userAddedStatus = new ObjectStore(false)
+  io.on('connection', function(socket) {
+    console.log("new connection")
+    const userAddedStatus = new ObjectStore(false)
 
-        const plain = [newMessage, newIssue, newEstimation, 
-          finishEstimation, newModerator, estimationSent]
-        plain.map(s => s(socket))
+    const plain = [newMessage, newIssue, newEstimation, 
+      finishEstimation, newModerator, estimationSent]
+    plain.map(s => s(socket))
         
-        const withStatus = [addUser, disconnect]
-        withStatus.map(s => s(socket, userAddedStatus))
-      })
+    const withStatus = [addUser, disconnect]
+    withStatus.map(s => s(socket, userAddedStatus))
+  })
 }
 
 module.exports = { init }
 
-// todo: refactor
+// todo: refactor & add tests
 // todo: change counter/numUsers to users.length

@@ -52,3 +52,5 @@ export default class Messages extends React.Component {
           )
     }
 }
+
+// todo: extract moderator part to other component

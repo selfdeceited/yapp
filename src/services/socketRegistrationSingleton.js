@@ -1,11 +1,11 @@
 import SocketConnection from './socketConnection'
 import * as R from 'ramda'
-import {store} from '../index'
-import {moderatorSet, finishEstimation} from '../actions/index'
+import { store } from '../index'
+import { moderatorSet, finishEstimation } from '../actions/index'
 
-let singleton = Symbol();
-let singletonEnforcer = Symbol();
-let registrationEnforcer = Symbol();
+let singleton = Symbol()
+let singletonEnforcer = Symbol()
+let registrationEnforcer = Symbol()
 
 class SocketRegistrationSingleton {
   constructor(enforcer) {
@@ -16,16 +16,17 @@ class SocketRegistrationSingleton {
   static get instance() {
     if (!this[singleton])
         this[singleton] = new SocketRegistrationSingleton(singletonEnforcer)
-    return this[singleton];
+    return this[singleton]
   }
   
   static set instance(v) { throw "Can't change constant property!" }
 
   static get registered() {
     if (!this[registrationEnforcer]) {
-        this[registrationEnforcer] = true;
-        return false;
-    } else return true;
+        this[registrationEnforcer] = true
+        return false
+    }
+    return true
   }
 }
 
@@ -114,6 +115,5 @@ self.log = (message, options) => {
       isLog: true
     })
 }
-
 
 export default SocketRegistrationSingleton;

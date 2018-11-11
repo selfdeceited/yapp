@@ -1,5 +1,6 @@
 import * as R from 'ramda'
 
+// todo: extract initial state to separate file - it's not part of the reducer's logic
 export const initialState = {
   username: "",
   logged_in: false,
@@ -24,10 +25,11 @@ const app = (state, action) => {
     return result;
   }
 
-  //todo: get rid of hardcoded action names and export them gracefully from actions!
+  // todo: get rid of hardcoded action names and export them gracefully from actions!
   const basicReducers = {
     'SET_USERNAME': addWithAction({ username: action.username, logged_in: true }, sc => {
-      if(!sc || !sc.username) return;
+      if (!sc || !sc.username)
+        return
       document.title = `YAPP - ${sc.username}`
     }),
     'CONNECTED': add({ connected: true }),

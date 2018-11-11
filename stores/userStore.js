@@ -10,16 +10,17 @@ class UserStore extends ObjectStore {
         this.data.push(newUser)
     }
     remove(username) {
-      this.data = this.data.filter(x=>x.username !== username)
+      this.data = this.data.filter(x => x.username !== username)
     }
   
     exists(username) {
-      return this.data.filter(x => x.username === username).length > 0
+      return !!this.getBy(username)
     }
   
     getBy(username) {
       return this.data.filter(x => x.username === username)[0]
     }
+    
     moderatorExists() {
       return this.data.filter(x => x.isModerator).length > 0
     }

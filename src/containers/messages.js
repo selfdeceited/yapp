@@ -11,7 +11,7 @@ const mapStateToProps = state => R.pick(
 const applyEstimation = (event, username, dispatch) => {
     const message = event.target.value
 
-    if(isNaN(parseFloat(message))) { //todo: enhance & move to reducers
+    if (isNaN(parseFloat(message))) { //todo: enhance & move to reducers
       event.target.value = ''
       return
     }
@@ -33,6 +33,8 @@ const applyEstimation = (event, username, dispatch) => {
 
     SocketConnection.instance.socket.emit('estimation sent', message)
     event.target.value = ''
+
+    // todo: emit one message to server handle both changes
 }
 
 const applyDescription = (event, username, dispatch) => {
@@ -53,23 +55,21 @@ const finishEstimation = dispatch => {
 }
 
 const claimModerator = (username, dispatch) => {
-    dispatch(addModerator({ username }))
-    SocketConnection.instance.socket.emit('new moderator', username)
+  dispatch(addModerator({ username }))
+  SocketConnection.instance.socket.emit('new moderator', username)
 }
 
 const mapDispatchToProps = dispatch => {
+  const typingDefault = action => (e, username) => {
+    if (e.key === "Enter") {
+      action(e, username, dispatch)
+    }
+  }
+
   return {
-    startTyping: (e, username) => {
-        if (e.key === "Enter") {
-          applyEstimation(e, username, dispatch)
-        }
-    },
+    startTyping: typingDefault(applyEstimation),
     claimModerator: username => claimModerator(username, dispatch),
-    startTypingDescription: (e, username) => {
-      if (e.key === "Enter") {
-        applyDescription(e, username, dispatch)
-      }
-    },
+    startTypingDescription: typingDefault(applyDescription),
     finishEstimation: () => finishEstimation(dispatch)
   }
 }
