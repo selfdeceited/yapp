@@ -17,3 +17,23 @@ export const connected = () => {
     type: "CONNECTED"
   }
 }
+
+export const addModerator = username => {
+  return {
+    type: "ADD_MODERATOR",
+    username
+  }
+}
+
+export const moderatorSet = () => {
+  return {
+    type: "MODERATOR_SET"
+  }
+}
+
+export const finishEstimation = estimationResult => {
+  return {
+    type: "FINISH_ESTIMATION",
+    estimationResult
+  }
+}

@@ -1,5 +1,7 @@
 import SocketConnection from './socketConnection'
 import * as R from 'ramda'
+import {store} from '../index'
+import {moderatorSet, finishEstimation} from '../actions/index'
 
 let singleton = Symbol();
 let singletonEnforcer = Symbol();
@@ -45,6 +47,8 @@ self.register = () => {
                   prepend: true
                 })
                 self.addParticipantsMessage(data)
+                if (data.moderatorExists)
+                    store.dispatch(moderatorSet())
             },
             'new message': data => {
                 self.addChatMessage({
@@ -52,6 +56,25 @@ self.register = () => {
                     body: data.message,
                     isLog: false
                   })
+            },
+            'new issue': data => {
+                self.addChatMessage({
+                    username: data.username,
+                    body: data.message,
+                    isLog: true,
+                    isDescription: true
+                  })
+            },
+            'user estimated': data => {
+                self.log(data.username + ' estimated the issue')
+            },
+            'new moderator' : data => {
+                self.log(data.username + ' is now the moderator!')
+                store.dispatch(moderatorSet())
+            },
+            'finish estimation' : data => {
+                self.log('estimation completed!')
+                store.dispatch(finishEstimation(data.voteResults))
             },
             'user joined': data => {
                 self.log(data.username + ' joined')

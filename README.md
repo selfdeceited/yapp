@@ -12,7 +12,7 @@ Yep Another Planning Poker (WIP)
  - [x] Migrate app to use Ramda
  - [ ] Cover app with unit tests
 ##### Slowly migrate to using Planning Poker functionality
- - [ ] One room for everyone; all are moderators. Once all joined, one clicks 'start' and people can type their value. Last value wins. After one clicks 'reveal', messages are shown.
+ - [x] One room for everyone; all are moderators. Once all joined, one clicks 'start' and people can type their value. Last value wins. After one clicks 'reveal', messages are shown.
  - [ ] Add moderator role. He invites people to the chat. Moderator selects stories to be reviewed and set estimation result.
  - [ ] Room management & permanent links.
  - [ ] Add values (cards) & ability to customize them for moderator.

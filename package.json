@@ -5,10 +5,11 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "postinstall": "parcel build ./src/index.html",
-    "build": "parcel build ./src/index.html",
-    "dev": "parcel watch ./src/index.html",
-    "test": "jest"
+    "postinstall": "parcel build ./src/index.html --no-cache",
+    "build": "parcel build ./src/index.html --no-cache",
+    "dev": "parcel watch ./src/index.html --no-cache",
+    "test": "jest",
+    "uhm": "parcel help watch"
   },
   "repository": {
     "type": "git",
