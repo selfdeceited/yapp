@@ -52,16 +52,20 @@ const finishEstimation = function(socket){
 const newMessageGeneric = function(actionName, noEmitAction, customAction) {
   return function(socket) {
     socket.on(actionName, function(data) {
-      const emitResult = {
+      const result = {
         username: socket.username,
         message: data
       }
-      console.log(actionName)
-      if (customAction) customAction(data)
 
-      if (!noEmitAction) {
-        socket.broadcast.emit(actionName, emitResult)
-      } else noEmitAction(emitResult)
+      console.log(actionName)
+
+      if (customAction)
+        customAction(data)
+
+      if (noEmitAction)
+        noEmitAction(result)
+      else
+        socket.broadcast.emit(actionName, result)
     })
   }
 }
@@ -74,15 +78,28 @@ const newIssue = newMessageGeneric('new issue', undefined, function(description)
 })
 
 const newEstimation = newMessageGeneric('new estimation', function(emitResult) {
+  let result = {
+    intent: "new",
+    allEstimationsAreSet: false
+  }
   if (voteSession.get() === undefined) {
     console.error(`voting session is closed, please ask moderator to set the description`)
     return
   }
 
-  if (!voteSession.containsVoteFor(emitResult.username))
+  if (!voteSession.containsVoteFor(emitResult.username)){
     voteSession.store(emitResult)
+  }
   else  // todo: switch to configurable condition if to allow replays or not!
+  {
     voteSession.editResultFor(emitResult.username, emitResult)
+    result.intent = "edit"
+  }
+
+  if (voteSession.get().length === users.get().length)
+    allEstimationsAreSet = true
+
+  return result; // todo: send indication if the result is new or not
 }, undefined)
 
 const addUser = function(socket, userAddedStatus) {
@@ -133,6 +150,15 @@ const disconnect = function(socket, userAddedStatus) {
 
 const init = function(io){
   io.on('connection', function(socket) {
+
+    
+    if (voteSession.issueDescription)
+    console.log("setting up the description")
+      socket.emit("new issue", {
+        username: socket.username,
+        message: voteSession.issueDescription
+      })
+
     console.log("new connection")
     const userAddedStatus = new ObjectStore(false)
 

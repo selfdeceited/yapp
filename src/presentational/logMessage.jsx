@@ -11,6 +11,6 @@ export default class LogMessage extends React.Component {
 
         return this.props.isDescription
             ? message("description", "New issue: ")
-            : message("log", "info: ")
+            : message("log", "〰 ")
     }
 }

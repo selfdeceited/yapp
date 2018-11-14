@@ -39,12 +39,14 @@ export default class Messages extends React.Component {
                         />
                 </div>
                 <div className={this.props.isModerator ? 'visible' : 'invisible'}>
-                    <button onClick={_ => this.props.finishEstimation()}>Finish estimation</button>
                     <div className={this.props.description ? 'invisible' : 'visible'}>
                         <input className="inputMessage"
                             placeholder="Enter description" tabIndex="2"
                             onKeyDown={_ => this.props.startTypingDescription(_, this.props.username)}
                         />
+                    </div>
+                    <div className={this.props.description ? 'visible' : 'invisible'}>
+                        <button onClick={_ => this.props.finishEstimation()}>Finish estimation</button>
                     </div>
                 </div>
               </div>

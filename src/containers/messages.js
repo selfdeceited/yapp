@@ -22,19 +22,11 @@ const applyEstimation = (event, username, dispatch) => {
       isLog: false
     }))
     
+    // todo: merge both calls
     SocketConnection.instance.socket.emit('new estimation', message)
-
-    const finishedMessage = `${username} has finished estimation`
-    dispatch(addChatMessage({
-      username: username,
-      body: finishedMessage,
-      isLog: true
-    }))
-
     SocketConnection.instance.socket.emit('estimation sent', message)
-    event.target.value = ''
 
-    // todo: emit one message to server handle both changes
+    event.target.value = ''
 }
 
 const applyDescription = (event, username, dispatch) => {

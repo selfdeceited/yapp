@@ -59,12 +59,13 @@ self.register = () => {
                   })
             },
             'new issue': data => {
-                self.addChatMessage({
-                    username: data.username,
-                    body: data.message,
-                    isLog: true,
-                    isDescription: true
-                  })
+                if (data.message)
+                    self.addChatMessage({
+                        username: data.username,
+                        body: data.message,
+                        isLog: true,
+                        isDescription: true
+                    })
             },
             'user estimated': data => {
                 self.log(data.username + ' estimated the issue')
@@ -74,8 +75,13 @@ self.register = () => {
                 store.dispatch(moderatorSet())
             },
             'finish estimation' : data => {
-                self.log('estimation completed!')
+                self.log('-------------------------------------------------')
+                self.log('------------- estimation completed! -------------')
+                self.log('-------------------------------------------------')
                 store.dispatch(finishEstimation(data.voteResults))
+                self.log('-------------------------------------------------')
+                self.log('-------------------------------------------------')
+                self.log('-------------------------------------------------')
             },
             'user joined': data => {
                 self.log(data.username + ' joined')
@@ -98,14 +104,8 @@ self.register = () => {
         R.mapObjIndexed((fn, name, obj) => self.socket.on(name, fn), registrationActions) // todo: refactor even better
 }
 
-self.addParticipantsMessage = (data) => {
-    var message = ''
-    if (data.numUsers === 1) {
-      message += "there's 1 participant"
-    } else {
-      message += "there are " + data.numUsers + " participants"
-    }
-    self.log(message)
+self.addParticipantsMessage = data => {
+    self.log(`there's ${data.numUsers} participant${data.numUsers === 1 ? '': 's'}`)
 }
 
 self.log = (message, options) => {
