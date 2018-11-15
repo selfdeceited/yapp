@@ -24,6 +24,9 @@ class UserStore extends ObjectStore {
     moderatorExists() {
       return this.data.filter(x => x.isModerator).length > 0
     }
+    count() {
+      return this.data ? this.data.length : 0
+    }
 }
 
 module.exports = UserStore

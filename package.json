@@ -8,8 +8,7 @@
     "postinstall": "parcel build ./src/index.html --no-cache",
     "build": "parcel build ./src/index.html --no-cache",
     "dev": "parcel watch ./src/index.html --no-cache",
-    "test": "jest",
-    "uhm": "parcel help watch"
+    "test": "jest"
   },
   "repository": {
     "type": "git",

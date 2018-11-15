@@ -1,8 +1,15 @@
-export const setUsername = username => ({ type: 'SET_USERNAME', username })
-export const addChatMessage = message => ({ type: "ADD_MESSAGE", message })
-export const connected = () => ({ type: "CONNECTED" })
-export const addModerator = username => ({ type: "ADD_MODERATOR", username })
-export const moderatorSet = () => ({ type: "MODERATOR_SET" })
-export const finishEstimation = estimationResult => ({ type: "FINISH_ESTIMATION", estimationResult })
+export const actionTypes = {
+    connected: "CONNECTED",
+    addChatMessage: "ADD_MESSAGE",
+    setUsername: "SET_USERNAME",
+    addModerator: "ADD_MODERATOR",
+    moderatorSet: "MODERATOR_SET",
+    finishEstimation: "FINISH_ESTIMATION"
+}
 
-// todo: reuse action names const to match same in reducers to avoid the chance of wrong copy-paste.
+export const setUsername = username => ({ type: actionTypes.setUsername, username })
+export const addChatMessage = message => ({ type: actionTypes.addChatMessage, message })
+export const connected = () => ({ type: actionTypes.connected })
+export const addModerator = username => ({ type: actionTypes.addModerator, username })
+export const moderatorSet = () => ({ type: actionTypes.moderatorSet })
+export const finishEstimation = estimationResult => ({ type: actionTypes.finishEstimation, estimationResult })

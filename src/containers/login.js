@@ -11,8 +11,11 @@ const mapDispatchToProps = dispatch => ({
       const username = e.target.value.trim() // todo: check for possible error
       if (!!username) {
         SocketConnection.instance.socket.emit('add user', username)
-        // todo: SocketConnection via redux
+        
         dispatch(setUsername(username))
+        document.title = 'YAPP - ' + username
+        // todo: SocketConnection via redux
+        // introduce dispatch of socket emittions!
       }
     }
   }

@@ -2,7 +2,6 @@ const ObjectStore = require("../stores/objectStore")
 const UserStore = require("../stores/userStore")
 const VoteSessionStore = require("../stores/voteSessionStore")
 
-const counter = new ObjectStore(0)
 const users = new UserStore()
 const voteSession = new VoteSessionStore()
 
@@ -88,7 +87,7 @@ const newEstimation = newMessageGeneric('new estimation', function(socket, emitR
   socket.broadcast.emit('user estimated', result)
 
   if (voteSession.get().length === users.get().length) {
-    const finishMessage = { message: 'all people has voted, you can finish the estimation'}
+    const finishMessage = { message: 'all people have voted, you can finish the estimation'}
     socket.emit('log', finishMessage)
     socket.broadcast.emit('log', finishMessage)
     // todo later: call finishEstimation(socket) directly?
@@ -103,7 +102,7 @@ const addUser = function(socket, userAddedStatus) {
       console.error(message)
       return;
     }
-    let numUsers = counter.get()
+    let numUsers = users.count()
     let addedUser = userAddedStatus.get()
     if (addedUser) return
 
@@ -111,7 +110,6 @@ const addUser = function(socket, userAddedStatus) {
     ++numUsers
     addedUser = true
 
-    counter.set(numUsers)
     userAddedStatus.set(addedUser)
     users.add({username, isModerator: false})
 
@@ -123,11 +121,10 @@ const addUser = function(socket, userAddedStatus) {
 const disconnect = function(socket, userAddedStatus) {
   socket.on('disconnect', function() {
     console.log(socket.username + ' disconnected')
-    let numUsers = counter.get()
+    let numUsers = users.count()
     let addedUser = userAddedStatus.get()
     if (addedUser) {
       --numUsers
-      counter.set(numUsers)
       if (numUsers === 0)
         voteSession.invalidate()
 
@@ -172,4 +169,3 @@ const init = function(io){
 module.exports = { init }
 
 // todo: refactor & add tests
-// todo: change counter/numUsers to users.length

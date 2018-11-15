@@ -39,7 +39,8 @@ self.register = () => {
 
     if (SocketRegistrationSingleton.registered)
         return
-
+        
+        // todo: obj too tight, make it pure & distribute
         const registrationActions = {
             'login': data => {
                 self.connected()
@@ -99,8 +100,8 @@ self.register = () => {
             },
             'reconnect_error': () => self.log('attempt to reconnect has failed')
         }
-        
-        R.mapObjIndexed((fn, name, obj) => self.socket.on(name, fn), registrationActions) // todo: refactor even better
+
+        R.mapObjIndexed((fn, name, obj) => self.socket.on(name, fn), registrationActions)
 }
 
 self.addParticipantsMessage = data => {
@@ -115,4 +116,4 @@ self.log = (message, options) => {
     })
 }
 
-export default SocketRegistrationSingleton;
+export default SocketRegistrationSingleton
