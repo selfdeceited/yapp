@@ -6,16 +6,6 @@ const counter = new ObjectStore(0)
 const users = new UserStore()
 const voteSession = new VoteSessionStore()
 
-const estimationSent = function(socket) {
-  socket.on('estimation sent', function(data) {
-    console.log('estimation sent by '+ socket.username)
-    socket.broadcast.emit('user estimated', {
-      username: socket.username,
-      message: data
-    })
-  })
-}
-
 const newModerator = function(socket) {
   const actionName = 'new moderator'
   socket.on(actionName, function() {
@@ -49,7 +39,8 @@ const finishEstimation = function(socket){
   })
 }
 
-const newMessageGeneric = function(actionName, noEmitAction, customAction) {
+// todo: generic message is weak and rigid, rework
+const newMessageGeneric = function(actionName, estimationAction, newIssueAction) {
   return function(socket) {
     socket.on(actionName, function(data) {
       const result = {
@@ -59,11 +50,11 @@ const newMessageGeneric = function(actionName, noEmitAction, customAction) {
 
       console.log(actionName)
 
-      if (customAction)
-        customAction(data)
+      if (newIssueAction)
+        newIssueAction(data)
 
-      if (noEmitAction)
-        noEmitAction(result)
+      if (estimationAction)
+        estimationAction(socket, result)
       else
         socket.broadcast.emit(actionName, result)
     })
@@ -77,11 +68,9 @@ const newIssue = newMessageGeneric('new issue', undefined, function(description)
   console.info("new estimation session started: " + description)
 })
 
-const newEstimation = newMessageGeneric('new estimation', function(emitResult) {
-  let result = {
-    intent: "new",
-    allEstimationsAreSet: false
-  }
+const newEstimation = newMessageGeneric('new estimation', function(socket, emitResult) {
+  let result = Object.assign(emitResult, { intent: "new" })
+
   if (voteSession.get() === undefined) {
     console.error(`voting session is closed, please ask moderator to set the description`)
     return
@@ -96,10 +85,14 @@ const newEstimation = newMessageGeneric('new estimation', function(emitResult) {
     result.intent = "edit"
   }
 
-  if (voteSession.get().length === users.get().length)
-    allEstimationsAreSet = true
+  socket.broadcast.emit('user estimated', result)
 
-  return result; // todo: send indication if the result is new or not
+  if (voteSession.get().length === users.get().length) {
+    const finishMessage = { message: 'all people has voted, you can finish the estimation'}
+    socket.emit('log', finishMessage)
+    socket.broadcast.emit('log', finishMessage)
+    // todo later: call finishEstimation(socket) directly?
+  }
 }, undefined)
 
 const addUser = function(socket, userAddedStatus) {
@@ -151,19 +144,24 @@ const disconnect = function(socket, userAddedStatus) {
 const init = function(io){
   io.on('connection', function(socket) {
 
-    
-    if (voteSession.issueDescription)
+    console.log("new connection")
+    if (voteSession.issueDescription){
     console.log("setting up the description")
       socket.emit("new issue", {
         username: socket.username,
         message: voteSession.issueDescription
       })
+    }
+    else {
+      socket.broadcast.emit('log', {
+        message: 'waiting for moderator to define the issue'
+      })
+    }
 
-    console.log("new connection")
     const userAddedStatus = new ObjectStore(false)
 
     const plain = [newMessage, newIssue, newEstimation, 
-      finishEstimation, newModerator, estimationSent]
+      finishEstimation, newModerator]
     plain.map(s => s(socket))
         
     const withStatus = [addUser, disconnect]

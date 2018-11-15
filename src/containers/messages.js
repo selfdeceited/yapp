@@ -21,16 +21,17 @@ const applyEstimation = (event, username, dispatch) => {
       body: message,
       isLog: false
     }))
-    
-    // todo: merge both calls
+
     SocketConnection.instance.socket.emit('new estimation', message)
-    SocketConnection.instance.socket.emit('estimation sent', message)
 
     event.target.value = ''
 }
 
 const applyDescription = (event, username, dispatch) => {
   const message = event.target.value
+  if (!message)
+    return
+
   dispatch(addChatMessage({
     username: username,
     body: message,

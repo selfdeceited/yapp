@@ -68,7 +68,7 @@ self.register = () => {
                     })
             },
             'user estimated': data => {
-                self.log(data.username + ' estimated the issue')
+                self.log(`${data.username} ${data.intent === 'edit' ? 're' : ''}estimated the issue`)
             },
             'new moderator' : data => {
                 self.log(data.username + ' is now the moderator!')
@@ -76,12 +76,11 @@ self.register = () => {
             },
             'finish estimation' : data => {
                 self.log('-------------------------------------------------')
-                self.log('------------- estimation completed! -------------')
-                self.log('-------------------------------------------------')
                 store.dispatch(finishEstimation(data.voteResults))
                 self.log('-------------------------------------------------')
-                self.log('-------------------------------------------------')
-                self.log('-------------------------------------------------')
+            },
+            'log': data => {
+                self.log(data.message)
             },
             'user joined': data => {
                 self.log(data.username + ' joined')
