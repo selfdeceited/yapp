@@ -1,6 +1,7 @@
 import * as React from "react"
 import LogMessage from "./logMessage"
 import UserMessage from "./userMessage"
+import ModeratorActionsContainer from "../containers/moderatorActions"
 
 export default class Messages extends React.Component {
     componentDidUpdate() {
@@ -38,21 +39,11 @@ export default class Messages extends React.Component {
                             onKeyDown={_ => this.props.startTyping(_, this.props.username)}
                         />
                 </div>
-                <div className={this.props.isModerator ? 'visible' : 'invisible'}>
-                    <div className={this.props.description ? 'invisible' : 'visible'}>
-                        <input className="inputMessage"
-                            placeholder="Enter description" tabIndex="2"
-                            onKeyDown={_ => this.props.startTypingDescription(_, this.props.username)}
-                        />
-                    </div>
-                    <div className={this.props.description ? 'visible' : 'invisible'}>
-                        <button onClick={_ => this.props.finishEstimation()}>Finish estimation</button>
-                    </div>
-                </div>
+                <ModeratorActionsContainer/>
               </div>
             </li>
           )
     }
 }
 
-// todo: extract moderator part to other component
+// todo: extract estimation part to other component

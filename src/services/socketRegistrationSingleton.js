@@ -79,6 +79,9 @@ self.register = () => {
                 self.log('-------------------------------------------------')
                 store.dispatch(finishEstimation(data.voteResults))
                 self.log('-------------------------------------------------')
+
+                if (!store.getState().isModerator)
+                  self.log('waiting for moderator to set the new issue')
             },
             'log': data => {
                 self.log(data.message)

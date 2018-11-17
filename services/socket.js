@@ -20,20 +20,22 @@ const newModerator = function(socket) {
     }
 
     console.log("setting moderator for " + socket.username)
+    users.getBy(socket.username).isModerator = true
+
     socket.emit(actionName, { username: socket.username })
     socket.broadcast.emit(actionName, { username: socket.username })
-    users.getBy(socket.username).isModerator = true
   })
 }
 
-const finishEstimation = function(socket){
+const finishEstimation = function(socket) {
   const actionName = 'finish estimation'
   socket.on(actionName, function() {
     console.log(actionName + " for " + voteSession.issueDescription)
     const emitResult = { voteResults: voteSession.get() }
+
     socket.emit(actionName, emitResult)
     socket.broadcast.emit(actionName, emitResult)
-  
+
     voteSession.invalidate()
   })
 }
@@ -63,7 +65,7 @@ const newMessageGeneric = function(actionName, estimationAction, newIssueAction)
 const newMessage = newMessageGeneric('new message')
 
 const newIssue = newMessageGeneric('new issue', undefined, function(description) {
-  voteSession.start(description);
+  voteSession.start(description)
   console.info("new estimation session started: " + description)
 })
 
@@ -97,7 +99,7 @@ const newEstimation = newMessageGeneric('new estimation', function(socket, emitR
 const addUser = function(socket, userAddedStatus) {
   socket.on('add user', function(username) {
     console.log('add user ' + username)
-    if (users.exists(username)){
+    if (users.exists(username)) {
       const message = `username ${username} already exists`;
       console.error(message)
       return;
@@ -138,7 +140,7 @@ const disconnect = function(socket, userAddedStatus) {
   })
 }
 
-const init = function(io){
+const init = function(io) {
   io.on('connection', function(socket) {
 
     console.log("new connection")
@@ -160,7 +162,7 @@ const init = function(io){
     const plain = [newMessage, newIssue, newEstimation, 
       finishEstimation, newModerator]
     plain.map(s => s(socket))
-        
+
     const withStatus = [addUser, disconnect]
     withStatus.map(s => s(socket, userAddedStatus))
   })

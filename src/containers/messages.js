@@ -3,6 +3,7 @@ import { addChatMessage, addModerator } from '../actions/index'
 import Messages from '../presentational/messages'
 import SocketConnection from '../services/socketConnection'
 import * as R from 'ramda';
+import { typingDefault } from "../services/utils"
 
 const mapStateToProps = state => R.pick(
   ['messages', 'username', 'moderatorExists', 'isModerator', 'description']
@@ -27,42 +28,15 @@ const applyEstimation = (event, username, dispatch) => {
     event.target.value = ''
 }
 
-const applyDescription = (event, username, dispatch) => {
-  const message = event.target.value
-  if (!message)
-    return
-
-  dispatch(addChatMessage({
-    username: username,
-    body: message,
-    isLog: true,
-    isDescription: true
-  }))
-  
-  SocketConnection.instance.socket.emit('new issue', message);
-  event.target.value = ''
-}
-
-const finishEstimation = dispatch => {
-  SocketConnection.instance.socket.emit('finish estimation')
-}
-
 const claimModerator = (username, dispatch) => {
   dispatch(addModerator({ username }))
   SocketConnection.instance.socket.emit('new moderator', username)
 }
 
 const mapDispatchToProps = dispatch => {
-  const typingDefault = action => (e, username) => {
-    if (e.key === "Enter") {
-      action(e, username, dispatch)
-    }
-  }
-
   return {
-    startTyping: typingDefault(applyEstimation),
+    startTyping: typingDefault(applyEstimation, dispatch),
     claimModerator: username => claimModerator(username, dispatch),
-    startTypingDescription: typingDefault(applyDescription),
     finishEstimation: () => finishEstimation(dispatch)
   }
 }
