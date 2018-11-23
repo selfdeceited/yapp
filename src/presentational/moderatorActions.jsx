@@ -5,7 +5,7 @@ export default class ModeratorActions extends React.Component {
         return (
         <div className={this.props.isModerator ? 'visible' : 'invisible'}>
             { this.props.description ? (
-                <button onClick={_ => this.props.finishEstimation()}>Finish estimation</button>
+                <button onClick={_ => this.props.finishEstimation()} className="btn default-btn"><span>Finish estimation</span></button>
             ) : (
                 <input className="inputMessage"
                     placeholder="Enter description" tabIndex="2"

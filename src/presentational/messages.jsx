@@ -30,8 +30,8 @@ export default class Messages extends React.Component {
               <div>
               
               <button onClick={_ => this.props.claimModerator(this.props.username)}
-                      className={this.props.moderatorExists ? 'invisible' : 'visible'}>
-                  I'm moderator, let's start!</button>
+                      className={'btn default-btn ' + (this.props.moderatorExists ? 'invisible' : 'visible')}>
+                  <span>I'm moderator, let's start!</span></button>
 
               <div className={this.props.moderatorExists && this.props.description ? 'visible' : 'invisible'}>
                         <input className="inputMessage" placeholder="Enter estimation" tabIndex="1"

@@ -1,156 +1,280 @@
-/* Fix user-agent */
-
 * {
-    box-sizing: border-box;
-  }
-  .invisible{
-    display: none;
-  }
+  box-sizing: border-box;
+}
+.invisible {
+  display: none !important;
+}
 
-  html {
-    font-weight: 300;
-    -webkit-font-smoothing: antialiased;
-  }
-  
-  html, input {
-    font-family:
-      "HelveticaNeue-Light",
-      "Helvetica Neue Light",
-      "Helvetica Neue",
-      Helvetica,
-      Arial,
-      "Lucida Grande",
-      sans-serif;
-  }
-  
-  html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-  }
-  
-  ul {
-    list-style: none;
-    word-wrap: break-word;
-  }
-  
-  /* Pages */
-  
-  .pages {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    width: 100%;
-  }
-  
-  .page {
-    height: 100%;
-    width: 100%;
-    position: absolute;
-  }
-  
-  /* Login Page */
-  
-  .login.page {
-    background-color: #000;
-  }
-  
-  .login.page .form {
-    height: 100px;
-    margin-top: -100px;
-    position: absolute;
-  
-    text-align: center;
-    top: 50%;
-    width: 100%;
-  }
-  
-  .login.page .form .usernameInput {
-    background-color: transparent;
-    border: none;
-    border-bottom: 2px solid #fff;
-    outline: none;
-    padding-bottom: 15px;
-    text-align: center;
-    width: 400px;
-  }
-  
-  .login.page .title {
-    font-size: 200%;
-  }
-  
-  .login.page .usernameInput {
-    font-size: 200%;
-    letter-spacing: 3px;
-  }
-  
-  .login.page .title, .login.page .usernameInput {
-    color: #fff;
-    font-weight: 100;
-  }
-  
-  /* Font */
-  
-  .messages {
-    font-size: 150%;
-  }
-  
-  .inputMessage {
-    font-size: 100%;
-  }
-  
-  .log {
-    color: gray;
-    font-size: 60%;
-    margin: 5px;
-    text-align: left;
-  }
+html {
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+}
 
-  .description {
-    color: navy;
-    font-size: 90%;
-    margin: 5px;
-    text-align: center;
-  }
-  
-  /* Messages */
-  
-  .chatArea {
-    height: 100%;
-    padding-bottom: 60px;
-  }
-  
-  .messages {
-    height: 100%;
-    margin: 0;
-    overflow-y: scroll;
-    padding: 10px 20px 10px 20px;
-  }
-  
-  .message.typing .messageBody {
-    color: gray;
-  }
-  
-  .username {
-    font-weight: 700;
-    overflow: hidden;
-    padding-right: 15px;
-    text-align: right;
-  }
-  
-  /* Input */
-  
-  .inputMessage {
-    border: 10px solid #000;
-    height: 60px;
-    left: 0;
-    outline: none;
-    padding-left: 10px;
-    right: 0;
-    width: 100%;
-  }
+html, input {
+  font-family:
+  'PT Sans',
+  "HelveticaNeue-Light",
+  "Helvetica Neue Light",
+  "Helvetica Neue",
+  Helvetica,
+  Arial,
+  "Lucida Grande",
+  sans-serif;
+}
 
-  .chat{
-    margin-left: 10px;
-    margin-right: 10px;
-  }
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+ul {
+  list-style: none;
+  word-wrap: break-word;
+}
+
+/* Pages */
+
+.pages {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.page {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+}
+
+/* Login Page */
+
+.login.page {
+  background-color: #000;
+}
+
+.login.page .form {
+  height: 100px;
+  margin-top: -100px;
+  position: absolute;
+  
+  text-align: center;
+  top: 50%;
+  width: 100%;
+}
+
+.login.page .form .usernameInput {
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid #fff;
+  outline: none;
+  padding-bottom: 15px;
+  text-align: center;
+  width: 400px;
+}
+
+.login.page .title {
+  font-size: 200%;
+}
+
+.login.page .usernameInput {
+  font-size: 200%;
+  letter-spacing: 3px;
+}
+
+.login.page .title, .login.page .usernameInput {
+  color: #fff;
+  font-weight: 100;
+}
+
+/* Font */
+
+.messages {
+  font-size: 150%;
+}
+
+.inputMessage {
+  font-size: 100%;
+}
+
+.log {
+  color: #c4d4d8;
+  font-size: 60%;
+  margin: 5px;
+  text-align: left;
+}
+
+.description {
+  color: #d2662a;
+  font-size: 160%;
+  margin: 10px;
+  text-align: center;
+  -webkit-text-stroke: 1px #cca28b87;
+}
+
+/* Messages */
+
+.chatArea {
+  height: 100%;
+  padding-bottom: 60px;
+}
+
+.messages {
+  height: 100%;
+  margin: 0;
+  overflow-y: scroll;
+  padding: 10px 20px 10px 20px;
+  max-height: 70vh;
+}
+
+.message.typing .messageBody {
+  color: gray;
+}
+.messageBody{
+  color:whitesmoke;
+}
+
+.username {
+  font-weight: 700;
+  overflow: hidden;
+  padding-right: 15px;
+  text-align: right;
+}
+
+/* Input */
+
+.inputMessage {
+  border: 10px solid rgb(0, 78, 116);
+  height: 60px;
+  left: 0;
+  outline: none;
+  padding-left: 10px;
+  right: 0;
+  width: 100%;
+  background-color: rgba(226, 210, 210, 0.53);
+  color:white;
+  max-width: 80%;
+}
+
+.inputMessage::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: whitesmoke;
+  opacity: 1; /* Firefox */
+}
+
+.inputMessage:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: whitesmoke;
+}
+
+.inputMessage::-ms-input-placeholder { /* Microsoft Edge */
+  color: whitesmoke;
+}
+
+.chat{
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+button
+{
+  margin-top: 10px;
+}
+
+#root {
+  background:url('https://images.unsplash.com/photo-1532699549061-92aade51c86d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=d5113e58eba37332b3c8cd8abe37928b&auto=format&fit=crop&w=1932&q=80') -25px -50px;
+  top:0;
+  width:100%;
+  z-index:0;
+  height:100%;
+  background-size:cover;
+  background-repeat: repeat-y;
+}
+  
+html
+{
+  background-image: linear-gradient(to bottom right,#0f4161,#733c24);
+ }
+#root  *
+ {
+  background-image: none;
+  opacity: .99;
+  z-index:15;
+ }
+ .login.page{
+  opacity: .1;
+ }
+
+
+
+
+ .btn {
+  position: relative;
+
+  display: block;
+  margin: 30px auto;
+  padding: 0;
+
+  overflow: hidden;
+
+  border-width: 0;
+  outline: none;
+  border-radius: 2px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
+  
+  background-color: #2ecc71;
+  color: #ecf0f1;
+  
+  transition: background-color .3s;
+}
+
+.btn:hover, .btn:focus {
+  background-color: #27ae60;
+}
+
+.btn > * {
+  position: relative;
+}
+
+.btn span {
+  display: block;
+  padding: 12px 24px;
+}
+
+.btn:before {
+  content: "";
+  
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  
+  display: block;
+  width: 0;
+  padding-top: 0;
+    
+  border-radius: 100%;
+  
+  background-color: rgba(236, 240, 241, .3);
+  
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.btn:active:before {
+  width: 120%;
+  padding-top: 120%;
+  
+  transition: width .2s ease-out, padding-top .2s ease-out;
+}
+
+.btn.default-btn {
+  background-color: #005780;
+  font-size: 120%;
+}
+
+.btn.default-btn:hover, .btn.default-btn:focus {
+  background-color: #8ab3cb;
+}
