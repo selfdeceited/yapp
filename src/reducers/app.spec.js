@@ -50,4 +50,4 @@ describe('reducers', () => {
     })
   })
 
-// todo: enhance tests to pass & add new ones!
+// TODO: enhance tests to pass & add new ones!

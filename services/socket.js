@@ -40,69 +40,80 @@ const finishEstimation = function(socket) {
   })
 }
 
-// todo: generic message is weak and rigid, rework
-const newMessageGeneric = function(actionName, estimationAction, newIssueAction) {
+// TODO: generic message is weak and rigid, rework
+const newMessageGeneric = function(actionName, messageAction) {
   return function(socket) {
     socket.on(actionName, function(data) {
       const result = {
         username: socket.username,
         message: data
       }
-
       console.log(actionName)
 
-      if (newIssueAction)
-        newIssueAction(data)
+      if (!messageAction){
+        throw new Error("messageAction desired")
+      }
 
-      if (estimationAction)
-        estimationAction(socket, result)
-      else
+      if (messageAction.do) {
+        messageAction.do(socket, result)
+      }
+      
+      if (messageAction.broadcast) {
         socket.broadcast.emit(actionName, result)
+      }
     })
   }
 }
 
-const newMessage = newMessageGeneric('new message')
+const newMessage = newMessageGeneric('new message', { broadcast: true } )
 
-const newIssue = newMessageGeneric('new issue', undefined, function(description) {
-  voteSession.start(description)
-  console.info("new estimation session started: " + description)
+const newIssue = newMessageGeneric('new issue', {
+  broadcast: true,
+  do: (socket, result) => {
+    const description = result.message
+    voteSession.start(description)
+    console.info("new estimation session started: " + description)
+  }
 })
 
-const newEstimation = newMessageGeneric('new estimation', function(socket, emitResult) {
-  let result = Object.assign(emitResult, { intent: "new" })
+const newEstimation = newMessageGeneric('new estimation', 
+{
+  broadcast: false,
+  do: (socket, result) =>  {
+    result = Object.assign(result, { intent: "new" })
 
-  if (voteSession.get() === undefined) {
-    console.error(`voting session is closed, please ask moderator to set the description`)
-    return
-  }
+    if (voteSession.get() === undefined) {
+      console.error(`voting session is closed, please ask moderator to set the description`)
+      return
+    }
 
-  if (!voteSession.containsVoteFor(emitResult.username)){
-    voteSession.store(emitResult)
-  }
-  else  // todo: switch to configurable condition if to allow replays or not!
-  {
-    voteSession.editResultFor(emitResult.username, emitResult)
-    result.intent = "edit"
-  }
+    if (!voteSession.containsVoteFor(result.username)) {
+      voteSession.store(result)
+    }
+    else  // TODO: switch to configurable condition if to allow replays or not!
+    {
+      voteSession.editResultFor(result.username, result)
+      result.intent = "edit"
+    }
 
-  socket.broadcast.emit('user estimated', result)
+    socket.broadcast.emit('user estimated', result)
 
-  if (voteSession.get().length === users.get().length) {
-    const finishMessage = { message: 'all people have voted, you can finish the estimation'}
-    socket.emit('log', finishMessage)
-    socket.broadcast.emit('log', finishMessage)
-    // todo later: call finishEstimation(socket) directly?
+    if (voteSession.get().length === users.get().length) {
+      const finishMessage = { message: 'all people have voted, you can finish the estimation'}
+      socket.emit('log', finishMessage)
+      socket.broadcast.emit('log', finishMessage)
+      // TODO later: call finishEstimation(socket) directly?
+    }
   }
-}, undefined)
+})
 
 const addUser = function(socket, userAddedStatus) {
   socket.on('add user', function(username) {
     console.log('add user ' + username)
     if (users.exists(username)) {
-      const message = `username ${username} already exists`;
+      const message = `username ${username} already exists`
       console.error(message)
-      return;
+      return
     }
     let numUsers = users.count()
     let addedUser = userAddedStatus.get()
@@ -170,4 +181,4 @@ const init = function(io) {
 
 module.exports = { init }
 
-// todo: refactor & add tests
+// TODO: refactor & add tests

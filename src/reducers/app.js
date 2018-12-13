@@ -1,7 +1,7 @@
 import * as R from 'ramda'
 import { actionTypes } from "../actions/index"
 
-// todo: extract initial state to separate file - it's not part of the reducer's logic
+// TODO: extract initial state to separate file - it's not part of the reducer's logic
 export const initialState = {
   username: "",
   logged_in: false,
@@ -18,7 +18,7 @@ const app = (state, action) => {
   if (state === undefined)
     state = initialState
 
-  // todo:
+  // TODO: refactor reducer logic (see below):
   // 1. extract pure functions: add, addWithCheck, noChanges, addWithAction
   // 2. extract areas by making them pure: const login = (action, state) => []
   // and here: 

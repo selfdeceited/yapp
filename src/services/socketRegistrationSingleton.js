@@ -40,7 +40,7 @@ self.register = () => {
     if (SocketRegistrationSingleton.registered)
         return
         
-        // todo: obj too tight, make it pure & distribute
+        // TODO: obj too tight, make it pure & distribute
         const registrationActions = {
             'login': data => {
                 self.connected()

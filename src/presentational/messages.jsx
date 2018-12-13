@@ -2,6 +2,7 @@ import * as React from "react"
 import LogMessage from "./logMessage"
 import UserMessage from "./userMessage"
 import ModeratorActionsContainer from "../containers/moderatorActions"
+import PlayerActionsContainer from "../containers/playerActions"
 
 export default class Messages extends React.Component {
     componentDidUpdate() {
@@ -28,22 +29,14 @@ export default class Messages extends React.Component {
                 </ul>
               </div>
               <div>
-              
-              <button onClick={_ => this.props.claimModerator(this.props.username)}
-                      className={'btn default-btn ' + (this.props.moderatorExists ? 'invisible' : 'visible')}>
-                  <span>I'm moderator, let's start!</span></button>
-
-              <div className={this.props.moderatorExists && this.props.description ? 'visible' : 'invisible'}>
-                        <input className="inputMessage" placeholder="Enter estimation" tabIndex="1"
-                            autoFocus={true}
-                            onKeyDown={_ => this.props.startTyping(_, this.props.username)}
-                        />
-                </div>
+                <button onClick={_ => this.props.claimModerator(this.props.username)}
+                    className={'btn default-btn ' + (this.props.moderatorExists ? 'invisible' : 'visible')}>
+                    <span>I'm moderator, let's start!</span>
+                </button>
+                <PlayerActionsContainer/>
                 <ModeratorActionsContainer/>
               </div>
             </li>
           )
     }
 }
-
-// todo: extract estimation part to other component

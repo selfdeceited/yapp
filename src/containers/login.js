@@ -8,14 +8,13 @@ const mapStateToProps = () => ({})
 const mapDispatchToProps = dispatch => ({
   startTyping: e => {
     if (e.key === "Enter") {
-      const username = e.target.value.trim() // todo: check for possible error
+      const username = e.target.value.trim() // TODO: check for possible error
       if (!!username) {
+        // TODO: move socket emission to reducer
         SocketConnection.instance.socket.emit('add user', username)
         
         dispatch(setUsername(username))
         document.title = 'YAPP - ' + username
-        // todo: SocketConnection via redux
-        // introduce dispatch of socket emittions!
       }
     }
   }
