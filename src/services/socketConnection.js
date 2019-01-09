@@ -3,6 +3,7 @@ import io from 'socket.io-client'
 let singleton = Symbol();
 let singletonEnforcer = Symbol();
 
+// TODO: singleton logic should go away (we expect socket to be opened once when redux is starting)
 class SocketConnectionSingleton {
   constructor(enforcer) {
     if (enforcer !== singletonEnforcer)

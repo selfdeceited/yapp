@@ -1,6 +1,6 @@
 import { actionTypes } from "../actions/index"
-import { add } from "./pureActions"
-
+import { add, addWithAction } from "./pureActions"
+import SocketConnection from "../services/socketConnection"
 
 export const login = (state, action) => [
     { 
@@ -9,6 +9,9 @@ export const login = (state, action) => [
     },
     {
       name: actionTypes.setUsername,
-      fn: add({username: action.username, logged_in: true })
+      fn: addWithAction({username: action.username, logged_in: true }, () => {
+        if (!state.username)
+          SocketConnection.instance.socket.emit('add user', action.username)
+      })
     }
 ]

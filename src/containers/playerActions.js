@@ -2,7 +2,6 @@ import { connect } from 'react-redux'
 import { addChatMessage } from '../actions/index'
 import { typingDefault } from "../services/utils"
 import PlayerActions from '../presentational/playerActions'
-import SocketConnection from '../services/socketConnection'
 
 import * as R from 'ramda';
 
@@ -22,9 +21,6 @@ const applyEstimation = (event, username, dispatch) => {
     body: message,
     isLog: false
   }))
-
-  // TODO: move socket emittion to reducer!
-  SocketConnection.instance.socket.emit('new estimation', message)
 
   event.target.value = ''
 }

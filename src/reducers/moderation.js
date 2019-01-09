@@ -1,5 +1,6 @@
 import { actionTypes } from "../actions/index"
-import { add, addWithCheck } from "./pureActions"
+import { add, addWithCheckAndAction } from "./pureActions"
+import SocketConnection from "../services/socketConnection"
 
 export const moderation = (state, action) => [
   {
@@ -8,6 +9,11 @@ export const moderation = (state, action) => [
   },
   { 
     name: actionTypes.addModerator,
-    fn: addWithCheck(state.connected, () => ({ isModerator: true }))
+    fn: addWithCheckAndAction(state.connected && state.username,
+      () => ({ isModerator: true }),
+      () => {
+        SocketConnection.instance.socket.emit('new moderator', state.username)
+      }
+    )
   }
 ]

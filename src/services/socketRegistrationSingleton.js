@@ -1,7 +1,7 @@
 import SocketConnection from './socketConnection'
 import * as R from 'ramda'
 import { store } from '../index'
-import { moderatorSet, finishEstimation } from '../actions/index'
+import { moderatorSet, estimationCompleted } from '../actions/index'
 
 let singleton = Symbol()
 let singletonEnforcer = Symbol()
@@ -77,7 +77,7 @@ self.register = () => {
             },
             'finish estimation' : data => {
                 self.log('-------------------------------------------------')
-                store.dispatch(finishEstimation(data.voteResults))
+                store.dispatch(estimationCompleted(data.voteResults))
                 self.log('-------------------------------------------------')
 
                 if (!store.getState().isModerator)
