@@ -76,9 +76,7 @@ self.register = () => {
                 store.dispatch(moderatorSet())
             },
             'finish estimation' : data => {
-                self.log('-------------------------------------------------')
                 store.dispatch(estimationCompleted(data.voteResults))
-                self.log('-------------------------------------------------')
 
                 if (!store.getState().isModerator)
                   self.log('waiting for moderator to set the new issue')

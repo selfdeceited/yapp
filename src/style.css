@@ -111,7 +111,6 @@ ul {
   font-size: 160%;
   margin: 10px;
   text-align: center;
-  -webkit-text-stroke: 1px #cca28b87;
 }
 
 /* Messages */
@@ -146,7 +145,7 @@ ul {
 /* Input */
 
 .inputMessage {
-  border: 10px solid rgb(0, 78, 116);
+  margin-left: 20px;
   height: 60px;
   left: 0;
   outline: none;
@@ -182,7 +181,6 @@ button
 }
 
 #root {
-  background:url('https://images.unsplash.com/photo-1532699549061-92aade51c86d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=d5113e58eba37332b3c8cd8abe37928b&auto=format&fit=crop&w=1932&q=80') -25px -50px;
   top:0;
   width:100%;
   z-index:0;
@@ -277,4 +275,9 @@ html
 
 .btn.default-btn:hover, .btn.default-btn:focus {
   background-color: #8ab3cb;
+}
+
+.estimation-result{
+  background-color: #9c9c902e;
+  padding-left: 10px;
 }

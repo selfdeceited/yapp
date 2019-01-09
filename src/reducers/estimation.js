@@ -23,8 +23,18 @@ export const estimation = (state, action) => [
     fn: addWithCheck(action.estimationResult && state.connected, () =>
       ({
         description: undefined,
-        messages: state.messages.concat(action.estimationResult.map(
-          x =>({username: x.username, body: x.message, isLog: false, isDescription: false})))
+        messages: state.messages.concat(
+          action.estimationResult.map(
+            x =>(
+              {
+                username: x.username,
+                body: x.message,
+                isLog: false,
+                isDescription: false,
+                isEstimationResult: true
+              }
+              ))
+          )
       }))
   },
   {

@@ -26,17 +26,21 @@ const newModerator = function(socket) {
     socket.broadcast.emit(actionName, { username: socket.username })
   })
 }
-
-const finishEstimation = function(socket) {
-  const actionName = 'finish estimation'
-  socket.on(actionName, function() {
-    console.log(actionName + " for " + voteSession.issueDescription)
+const invokeFinishEstimation = function(socket)
+{
+   const actionName = 'finish estimation'
+   console.log(actionName + " for " + voteSession.issueDescription)
     const emitResult = { voteResults: voteSession.get() }
 
     socket.emit(actionName, emitResult)
     socket.broadcast.emit(actionName, emitResult)
 
     voteSession.invalidate()
+}
+
+const finishEstimation = function(socket) {
+  socket.on('finish estimation', function() {
+    invokeFinishEstimation(socket)
   })
 }
 
@@ -99,10 +103,10 @@ const newEstimation = newMessageGeneric('new estimation',
     socket.broadcast.emit('user estimated', result)
 
     if (voteSession.get().length === users.get().length) {
-      const finishMessage = { message: 'all people have voted, you can finish the estimation'}
+      const finishMessage = { message: 'voting completed!'}
       socket.emit('log', finishMessage)
       socket.broadcast.emit('log', finishMessage)
-      // TODO later: call finishEstimation(socket) directly?
+      invokeFinishEstimation(socket)
     }
   }
 })
