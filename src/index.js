@@ -5,7 +5,7 @@ import { createStore } from 'redux'
 import "./style.css"
 import Main from './containers/main'
 import reducerApp from './reducers/app'
-import { initialState } from "./reducers/app"
+import { initialState } from "./reducers/initialState"
 
 export const store = createStore(reducerApp, initialState, 
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
