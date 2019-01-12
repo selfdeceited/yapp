@@ -1,6 +1,6 @@
 import { actionTypes } from "../actions/index"
 import { addWithCheck, addWithCheckAndAction, noChanges } from "./pureActions"
-import SocketConnection from "../services/socketConnection"
+import socket from "../services/socketConnection"
 
 export const estimation = (state, action) => [
   {
@@ -13,9 +13,9 @@ export const estimation = (state, action) => [
       () => 
       {
         if (action.message.isDescription && state.isModerator)
-          SocketConnection.instance.socket.emit('new issue', action.message.body)
+          socket.emit('new issue', action.message.body)
         else if (!action.message.isLog)
-          SocketConnection.instance.socket.emit('new estimation', action.message.body)
+          socket.emit('new estimation', action.message.body)
       })
   },
   {
@@ -40,7 +40,7 @@ export const estimation = (state, action) => [
   {
     name: actionTypes.finishEstimation,
     fn: (state, action) => {
-      SocketConnection.instance.socket.emit('finish estimation')
+      socket.emit('finish estimation')
       return noChanges(state, action)
     }
   }

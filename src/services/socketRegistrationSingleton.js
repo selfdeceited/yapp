@@ -1,4 +1,4 @@
-import SocketConnection from './socketConnection'
+import socket from './socketConnection'
 import * as R from 'ramda'
 import { store } from '../index'
 import { moderatorSet, estimationCompleted } from '../actions/index'
@@ -31,7 +31,7 @@ class SocketRegistrationSingleton {
 }
 
 var self = SocketRegistrationSingleton.instance
-self.socket = SocketConnection.instance.socket
+self.socket = socket
 
 self.register = () => {
     if (!self.connected || !self.addChatMessage || !self.getUsername)

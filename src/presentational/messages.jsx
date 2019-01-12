@@ -12,7 +12,7 @@ export default class Messages extends React.Component {
 
     render() { 
         return (
-            <li className="chat">
+            <div className="chat">
               <div className="chatArea">
                 <ul className="messages">
                   { 
@@ -36,7 +36,7 @@ export default class Messages extends React.Component {
                 <PlayerActionsContainer/>
                 <ModeratorActionsContainer/>
               </div>
-            </li>
+            </div>
           )
     }
 }

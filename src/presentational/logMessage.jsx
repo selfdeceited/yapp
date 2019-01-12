@@ -9,8 +9,9 @@ export default class LogMessage extends React.Component {
                 {this.props.message.body}
             </li>)
 
+        const logEmojis = ["🐲", "🦈", "🐙", "🦅", "🦉", "🐇", "🐛"]
         return this.props.isDescription
             ? message("description", "New issue: ")
-            : message("log", "〰 ")
+            : message("log", `${logEmojis[Math.floor(Math.random()*logEmojis.length)]} `)
     }
 }
