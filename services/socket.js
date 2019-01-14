@@ -1,31 +1,11 @@
 const ObjectStore = require("../stores/objectStore")
-const UserStore = require("../stores/userStore")
 const VoteSessionStore = require("../stores/voteSessionStore")
+const config = require("../config")
+const moderator = require("./moderator")
+const { users } = require("./users")
 
-const users = new UserStore()
 const voteSession = new VoteSessionStore()
 
-const newModerator = function(socket) {
-  const actionName = 'new moderator'
-  socket.on(actionName, function() {
-    if (!socket.username) {
-      console.error("username not set, exiting")
-      return;
-    }
-    
-    if (users.moderatorExists()) {
-      const message = `moderator already exists`;
-      console.error(message)
-      return;
-    }
-
-    console.log("setting moderator for " + socket.username)
-    users.getBy(socket.username).isModerator = true
-
-    socket.emit(actionName, { username: socket.username })
-    socket.broadcast.emit(actionName, { username: socket.username })
-  })
-}
 const invokeFinishEstimation = function(socket)
 {
    const actionName = 'finish estimation'
@@ -94,10 +74,13 @@ const newEstimation = newMessageGeneric('new estimation',
     if (!voteSession.containsVoteFor(result.username)) {
       voteSession.store(result)
     }
-    else  // TODO: switch to configurable condition if to allow replays or not!
+    else if(config.editAllowed)
     {
       voteSession.editResultFor(result.username, result)
       result.intent = "edit"
+    } else {
+      socket.emit('log', {message: 're-voting is prohibited by current config'})
+      return
     }
 
     socket.broadcast.emit('user estimated', result)
@@ -106,12 +89,13 @@ const newEstimation = newMessageGeneric('new estimation',
       const finishMessage = { message: 'voting completed!'}
       socket.emit('log', finishMessage)
       socket.broadcast.emit('log', finishMessage)
-      invokeFinishEstimation(socket)
+      if (config.voteautocompletion)
+        invokeFinishEstimation(socket)
     }
   }
 })
 
-const addUser = function(socket, userAddedStatus) {
+const addUser = function(socket, userStatus) {
   socket.on('add user', function(username) {
     console.log('add user ' + username)
     if (users.exists(username)) {
@@ -119,39 +103,38 @@ const addUser = function(socket, userAddedStatus) {
       console.error(message)
       return
     }
-    let numUsers = users.count()
-    let addedUser = userAddedStatus.get()
-    if (addedUser) return
+    
+    let user = userStatus.get()
+    if (user)
+      return
 
     socket.username = username
-    ++numUsers
-    addedUser = true
 
-    userAddedStatus.set(addedUser)
+    userStatus.set(true)
     users.add({username, isModerator: false})
 
+    let numUsers = users.count()
     socket.emit('login', { numUsers, moderatorExists: users.moderatorExists() })
     socket.broadcast.emit('user joined', { username: socket.username, numUsers })
   })
 }
 
-const disconnect = function(socket, userAddedStatus) {
+const disconnect = function(socket, userStatus) {
   socket.on('disconnect', function() {
     console.log(socket.username + ' disconnected')
     let numUsers = users.count()
-    let addedUser = userAddedStatus.get()
-    if (addedUser) {
-      --numUsers
-      if (numUsers === 0)
-        voteSession.invalidate()
+    let user = userStatus.get()
 
-      users.remove(socket.username)
+    if (!user)
+      return
+    
+    --numUsers
+    if (numUsers === 0)
+      voteSession.invalidate()
 
-      socket.broadcast.emit('user left', {
-        username: socket.username,
-        numUsers: numUsers
-      })
-    }
+    users.remove(socket.username)
+
+    socket.broadcast.emit('user left', { username: socket.username, numUsers })
   })
 }
 
@@ -172,14 +155,14 @@ const init = function(io) {
       })
     }
 
-    const userAddedStatus = new ObjectStore(false)
+    const userStatus = new ObjectStore(false)
 
     const plain = [newMessage, newIssue, newEstimation, 
-      finishEstimation, newModerator]
+      finishEstimation, moderator.newModerator]
     plain.map(s => s(socket))
 
     const withStatus = [addUser, disconnect]
-    withStatus.map(s => s(socket, userAddedStatus))
+    withStatus.map(s => s(socket, userStatus))
   })
 }
 
