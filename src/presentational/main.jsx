@@ -1,7 +1,6 @@
 import * as React from "react"
 import LoginContainer from "../containers/login"
 import MessagesContainer from "../containers/messages"
-import SocketRegistrationContainer from "../containers/socketRegistration"
 
 export default class Main extends React.Component {
     render() { 
@@ -11,7 +10,6 @@ export default class Main extends React.Component {
                 this.props.showLogin ? <LoginContainer/> : <MessagesContainer/>
             }
             </div>
-            <SocketRegistrationContainer/>
          </div>
     }
 }

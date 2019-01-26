@@ -6,6 +6,7 @@ import "./style.css"
 import Main from './containers/main'
 import reducerApp from './reducers/app'
 import { initialState } from "./reducers/initialState"
+import SocketRegistration from "./services/socketRegistration"
 
 export const store = createStore(reducerApp, initialState, 
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
@@ -16,3 +17,5 @@ ReactDOM.render(
     </Provider>,
     document.getElementById("root"),
 )
+
+SocketRegistration.register()
