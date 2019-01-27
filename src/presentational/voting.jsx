@@ -4,7 +4,7 @@ import UserMessage from "./userMessage"
 import ModeratorActionsContainer from "../containers/moderatorActions"
 import PlayerActionsContainer from "../containers/playerActions"
 
-export default class Messages extends React.Component {
+export default class Voting extends React.Component {
     componentDidUpdate() {
         if (this.messagesEnd)
             this.messagesEnd.scrollIntoView({ behavior: "smooth" });
@@ -27,14 +27,15 @@ export default class Messages extends React.Component {
                   }
                   <li ref={el => { this.messagesEnd = el; }}></li>
                 </ul>
-              </div>
-              <div>
-                <button onClick={_ => this.props.claimModerator(this.props.username)}
-                    className={'btn default-btn ' + (this.props.moderatorExists ? 'invisible' : 'visible')}>
-                    <span>I'm moderator, let's start!</span>
-                </button>
-                <PlayerActionsContainer/>
-                <ModeratorActionsContainer/>
+
+                <div className="action-area">
+                    <button onClick={_ => this.props.claimModerator(this.props.username)}
+                        className={'btn default-btn ' + (this.props.moderatorExists ? 'invisible' : 'visible')}>
+                        <span>I'm moderator, let's start!</span>
+                    </button>
+                    <PlayerActionsContainer/>
+                    <ModeratorActionsContainer/>
+                </div>
               </div>
             </div>
           )

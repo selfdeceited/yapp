@@ -1,15 +1,15 @@
 import * as React from "react"
 import LoginContainer from "../containers/login"
-import MessagesContainer from "../containers/messages"
+import VotingContainer from "../containers/voting"
 
 export default class Main extends React.Component {
     render() { 
-        return <div>
+        return (
+        <div>
             <div className="pages">
-            {
-                this.props.showLogin ? <LoginContainer/> : <MessagesContainer/>
-            }
+                { this.props.showLogin ? <LoginContainer/> : <VotingContainer/> }
             </div>
          </div>
+         )
     }
 }

@@ -24,7 +24,7 @@ html, input {
 
 html, body {
   width: 100%;
-  height: 100%;
+  min-height: 100%;
   margin: 0;
   padding: 0;
 }
@@ -197,14 +197,13 @@ html
 #root  *
  {
   background-image: none;
-  opacity: .99;
   z-index:15;
  }
- .login.page{
-  opacity: .1;
+
+ .login.page
+ {
+  opacity: .99;
  }
-
-
 
 
  .btn {
@@ -282,4 +281,199 @@ html
   background-color: #9c9c902e;
   padding-left: 50px;
   max-width: 350px;
+}
+
+
+
+
+.deck {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+/* --- CARD SETTINGS --- */
+
+.deck>span>input,
+.deck>span>u,
+.deck>span>b {
+  width: 86px;
+  height: 129px;
+  position: relative;
+}
+
+.deck>span>input {
+  margin: 0 5px 10px;
+  z-index: 999 !important;
+  cursor: pointer;
+  opacity: 0;
+}
+
+.deck>span>u,
+.deck>span>b {
+  left: -5px; /* Subtract margin value */
+  margin-left: -86px; /* Subtract width value */
+  display: inline-block;
+  text-align: center;
+  vertical-align: top;
+  border: 5px solid #f8fff9;
+  box-sizing: border-box;
+  border-radius: 8px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* --- FRONT CONTENT --- */
+
+.deck>span>u{
+  background: #f8fff9;
+  text-decoration: none;
+  font: italic 12px Arial, Helvetica, sans-serif;
+  color: grey;
+}
+
+.deck>span>u::first-line{
+  font: 50px/70px Arial, Helvetica, sans-serif;
+  color: orange;
+}
+
+.deck>span>u>b {
+  font: bold 10px "Comic Sans MS", cursive, sans-serif;
+  color: teal;
+  display: block;
+  margin-top: -10px;
+}
+
+/* --- BACK CONTENT --- */
+
+.deck>span>b {
+  background: #2d5a7d !important;
+  border: 5px solid #f8fff9;
+  box-sizing: border-box;
+}
+
+.deck>span>b::before,
+.deck>span>b::after {
+  content: '';
+  display: block;
+  position: absolute;
+  right: 0;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background: url('https://blog.codepen.io/wp-content/uploads/2012/06/Button-Fill-White-Small.png') center/36px;
+  border-radius: inherit;
+  opacity: .3;
+}
+
+.deck>span>b::after {
+  background-position: calc(50% + 18px) calc(50% + 18px);
+}
+
+/* --- ANIMATION AND 3D SETTINGS --- */
+
+.deck {
+  perspective: 1450px;
+}
+
+.deck>span>u,
+.deck>span>b {
+  transition: all .8s;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  z-index: 0;
+}
+
+.deck>span>input:checked + u,
+.deck>span>input:checked + u + b {
+  z-index: 100;
+}
+
+.deck>span>input:focus + u,
+.deck>span>input:focus + u + b {
+  transition-property:  transform, filter, box-shadow; /* Exclude z-index to immediately overlay */
+  outline: 0;
+  z-index: 900;
+}
+
+/* --- FRONT ANIMATION --- */
+
+.deck>span>u {
+  transform: translateX(160%) rotateY(-180deg);
+  transform-origin: -30% center;
+  box-shadow: 130px 30px 40px -20px rgba(0, 0, 0, 0);
+  filter: brightness(3);
+}
+
+.deck>span>input:checked + u {
+  transform: translateX(0%) rotateY(0deg);
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, .4);
+  filter: brightness(1);
+}
+
+/* --- BACK ANIMATION --- */
+
+.deck>span>b {
+  transform: translateX(0%) rotateY(0deg);
+  transform-origin: 130% center;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, .4);
+  filter: brightness(1);
+}
+
+.deck>span>input:checked + u + b {
+  transform: translateX(-160%) rotateY(180deg);
+  box-shadow: 80px 10px 20px -40px rgba(0, 0, 0, 0);
+  filter: brightness(0);
+}
+
+/* Edge hack - Prevent click during transition, otherwise the animation breaks */
+
+@supports (-ms-ime-align:auto) {
+  .deck>span>input {
+    animation: step-end .8s; /*Time is the same as the main transition*/
+  }
+  .deck>span>u,
+  .deck>span>b {
+    cursor: pointer;
+  }
+
+  .deck>span>input:checked {
+    animation-name: noclick1;
+  }
+
+  .deck>span>input:not(:checked) {
+    animation-name: noclick2;
+  }
+
+  @keyframes noclick1 {
+    0%   { visibility: hidden; }
+    100% { visibility: visible; }
+  }
+
+  @keyframes noclick2 {
+    0%   { visibility: hidden; }
+    100% { visibility: visible; }
+  }
+}
+
+
+.table {
+  position: relative;
+  margin: 0 auto;
+  padding: 18px 18px 30px;
+  display: table;
+  line-height: 0;
+}
+.action-area{
+  margin-top:10px;
+}
+.custom-scope-title{
+    color: white;
+    padding-left: 25px;
+}
+.estimation-message{
+    width: 300px;
+    height: 40px;
+    border: none;
 }

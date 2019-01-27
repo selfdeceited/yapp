@@ -8,8 +8,9 @@ Yep Another Planning Poker (WIP)
 ##### Feature roadmap
  - [x] One room for everyone; all are moderators. Once all joined, one clicks 'start' and people can type their value. Last value wins. After one clicks 'reveal', messages are shown.
  - [x] Add moderator role. He invites people to the chat. Moderator selects stories to be reviewed and set estimation result.
- - [ ] show which people has already joined the session and which has put the estimates.
- - [ ] Add values (cards) & ability to customize them for moderator.
+ - [ ] separate panel showing which people has already joined the session and which has put the estimates.
+ - [x] Add values (cards), leave input as an option
+ - [ ] Add ability to customize them for moderator.
  - [ ] Room management & permanent links.
  - [ ] Auth & personalise rooms (store related data per room).
  - [ ] Add customizable timer, re-vote ability, role management.
