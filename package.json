@@ -5,9 +5,9 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "postinstall": "parcel build ./src/index.html --no-cache",
-    "build": "parcel build ./src/index.html --no-cache",
-    "dev": "parcel watch ./src/index.html --no-cache",
+    "postinstall": "npm run build",
+    "build": "cross-env NODE_ENV=development parcel build ./src/index.html --no-cache --public-url ./dist/",
+    "dev": "cross-env NODE_ENV=production parcel watch ./src/index.html --no-cache --public-url ./dist/",
     "test": "jest"
   },
   "repository": {
@@ -38,7 +38,9 @@
   },
   "devDependencies": {
     "@babel/preset-env": "^7.0.0-beta.47",
+    "babel-core": "^6.26.3",
     "babel-jest": "^23.0.0",
+    "cross-env": "^7.0.2",
     "jest": "^22.4.3"
   }
 }

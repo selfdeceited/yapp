@@ -348,7 +348,8 @@ html
 /* --- BACK CONTENT --- */
 
 .deck>span>b {
-  background: #2d5a7d !important;
+  /*background: #2d5a7d !important;*/
+  background-color: #957e7e63 !important;
   border: 5px solid #f8fff9;
   box-sizing: border-box;
 }
@@ -362,7 +363,7 @@ html
   left: 0;
   top: 0;
   bottom: 0;
-  background: url('https://blog.codepen.io/wp-content/uploads/2012/06/Button-Fill-White-Small.png') center/36px;
+  /*background: url('https://blog.codepen.io/wp-content/uploads/2012/06/Button-Fill-White-Small.png') center/36px;*/
   border-radius: inherit;
   opacity: .3;
 }
